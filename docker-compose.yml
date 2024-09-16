@@ -1,0 +1,22 @@
+version: "3"
+services:
+  kafka:
+    image: bitnami/kafka
+    container_name: kafka
+    ports:
+      - 9092:9092
+    environment:
+      - KAFKA_ENABLE_KRAFT=yes  # Enable Kraft mode
+      - KAFKA_CFG_PROCESS_ROLES=broker,controller  # Define roles for the node
+      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER  # Listener for the controller
+      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:2181  # Listeners for clients and controller
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT  # Security protocol mapping
+      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092  # Address to advertise to clients
+      - KAFKA_BROKER_ID=1  # Unique broker ID
+      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:2181  # Quorum voters for the controller
+      - ALLOW_PLAINTEXT_LISTENER=yes  # Allow plaintext connections
+      - KAFKA_CFG_NODE_ID=1  # Node ID for the Kafka instance
+      - KAFKA_KRAFT_CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk  # Cluster ID for Kraft mode
+    volumes:
+      - ./kafka:/bitnami/kafka  # Mount a host directory to the container
+
