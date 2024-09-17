@@ -1,5 +1,13 @@
-version: "3"
+name: kafka-a-new-hope
+
 services:
+  api: 
+    build: ./api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - kafka
+
   kafka:
     image: bitnami/kafka
     container_name: kafka

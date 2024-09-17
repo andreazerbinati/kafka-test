@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // Use modern JavaScript features
+    "module": "NodeNext", // Set the module system to NodeNext
+    "moduleResolution": "NodeNext", // Resolve module as per Node.js style
+    "strict": true, // Enable strict type-checking
+    "esModuleInterop": true, // Enable interoperability with CommonJS modules
+    "skipLibCheck": true, // Skip checking library types
+    "forceConsistentCasingInFileNames": true, // Enforce consistent file name casing
+    "outDir": "dist", // Output directory for compiled files
+    "sourceMap": true // Generate source maps
+  },
+  "include": ["src/**/*"], // Include all TypeScript files in the src directory
+  "exclude": ["node_modules", "**/*.spec.ts"] // Exclude node_modules and test files
+}

@@ -19,8 +19,9 @@ lerna-debug.log*
 .pnp.js
 
 # Production
-/dist
+api/dist
 /build
+kafka/data
 
 # Typescript
 *.tsbuildinfo
