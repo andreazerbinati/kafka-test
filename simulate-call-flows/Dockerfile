@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # Default command to run the script
-CMD ["npx", "ts-node", "simulateCallFlows.ts", "50"]
+CMD ["npx", "ts-node", "parallelSimulateCallEvents.ts", "50"]
