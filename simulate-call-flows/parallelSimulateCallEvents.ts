@@ -1,4 +1,4 @@
-const API_ENDPOINT = "http://localhost:9092/callEvents";
+const API_ENDPOINT = "http://api:3000/callEvents";
 
 interface EventCommonProperties {
   callingNumber: string;
@@ -72,6 +72,7 @@ const createEvent = (
 
 const sendEvent = async (event: CallEvent): Promise<void> => {
   try {
+    console.log(">>> SENDING EVENT TO", API_ENDPOINT);
     const response = await fetch(API_ENDPOINT, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
