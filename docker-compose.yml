@@ -9,22 +9,23 @@ services:
       - kafka
 
   kafka:
-    image: bitnami/kafka
-    container_name: kafka
+    image: confluentinc/cp-kafka:7.7.1
+    container_name: kafka-kraft
     ports:
-      - 9092:9092
+      - 9101:9101
     environment:
-      - KAFKA_ENABLE_KRAFT=yes # Enable Kraft mode
-      - KAFKA_CFG_PROCESS_ROLES=broker,controller # Define roles for the node
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER # Listener for the controller
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:2181 # Listeners for clients and controller
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT # Security protocol mapping
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://127.0.0.1:9092 # Address to advertise to clients
-      - KAFKA_BROKER_ID=1 # Unique broker ID
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=1@127.0.0.1:2181 # Quorum voters for the controller
-      - ALLOW_PLAINTEXT_LISTENER=yes # Allow plaintext connections
-      - KAFKA_CFG_NODE_ID=1 # Node ID for the Kafka instance
-      - KAFKA_KRAFT_CLUSTER_ID=MkU3OEVBNTcwNTJENDM2Qk # Cluster ID for Kraft mode
+      - KAFKA_NODE_ID=1
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP='CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      - KAFKA_ADVERTISED_LISTENERS='PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      - KAFKA_JMX_PORT=9101
+      - KAFKA_JMX_HOSTNAME=localhost
+      - KAFKA_PROCESS_ROLES='broker,controller'
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_CONTROLLER_QUORUM_VOTERS='1@kafka:29093'
+      - KAFKA_LISTENERS='PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      - KAFKA_INTER_BROKER_LISTENER_NAME='PLAINTEXT'
+      - KAFKA_CONTROLLER_LISTENER_NAMES='CONTROLLER'
+      - CLUSTER_ID='MkU3OEVBNTcwNTJENDM2Qk'
     volumes:
       - ./kafka:/bitnami/kafka # Mount a host directory to the container
 
@@ -33,6 +34,6 @@ services:
       context: ./simulate-call-flows
     depends_on:
       - api
-    command: ["npx", "ts-node", "simulateCallFlows.ts", "50"]
+    command: ["npx", "ts-node", "parallelSimulateCallEvents.ts", "50"]
     volumes:
       - ./simulate-call-flows:/usr/src/app
